@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WalletController;
+use App\Http\Controllers\EventController;
 
 
 /*
@@ -22,3 +23,4 @@ use App\Http\Controllers\WalletController;
 
 
 Route::get('/balance/{id}', [WalletController::class, 'index']);
+Route::post('/evento', [EventController::class, 'create']);
