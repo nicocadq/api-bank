@@ -10,6 +10,10 @@ class Wallet extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'email'
+    ];
+
     protected $attributes = [
         'money' => 0,
     ];

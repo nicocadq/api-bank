@@ -22,7 +22,8 @@ class WalletFactory extends Factory
     public function definition()
     {
         return [
-            'money' => $this->faker->numberBetween($min = 200, $max = 300)
+            'money' => $this->faker->numberBetween($min = 200, $max = 300),
+            'email' => $this->faker->unique()->safeEmail(),
         ];
     }
 }

@@ -57,4 +57,19 @@ class EventTest extends TestCase
             [ 'id' => $destiny_wallet->id, 'balance' => ($destiny_wallet->money + $amount)],
         ]);
     }
+
+
+    public function testCreateWithdrawalNotEnoughMoney()
+    {
+        $wallet = Wallet::factory()->create();
+        $biggerAmount = 1000;
+
+        $response = $this->post('/api/evento', ['tipo' => 'retiro', 'origen' => $wallet->id, 'monto' => $biggerAmount]);
+
+        $response
+        ->assertStatus(400)
+        ->assertJson([
+            'error' => 'Not enough money to make the withdrawal',
+        ]);
+    }
 }
