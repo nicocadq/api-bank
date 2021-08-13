@@ -10,6 +10,8 @@ class Event extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['type', 'amount', 'destiny_wallet_id'];
+
     public function origin()
     {
         return $this->belongsTo(Wallet::class, 'origin_wallet_id');

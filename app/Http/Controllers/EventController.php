@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Wallet;
+use App\Models\Event;
 
 class EventController extends Controller
 {
@@ -18,7 +19,7 @@ class EventController extends Controller
         switch ($type) {
             case $this->DEPOSIT:
                 $wallet = Wallet::findOrFail($request->input('destino'));
-
+                
                 $wallet->money = $wallet->money + $request->input('monto');
                 $wallet->save();
 
