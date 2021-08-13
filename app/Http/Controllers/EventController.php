@@ -27,6 +27,10 @@ class EventController extends Controller
             case $this->WITHDRAWAL:
                 $wallet = Wallet::findOrFail($request->input('origen'));
 
+                if($wallet->money < $request->input('monto')){
+                    return response()->json(['error' => 'Not enough money to make the withdrawal'], 400);
+                }
+
                 $wallet->money = $wallet->money - $request->input('monto');
                 $wallet->save();
 
@@ -34,6 +38,10 @@ class EventController extends Controller
             case $this->TRANSFER:
                 $origin_wallet = Wallet::findOrFail($request->input('origen'));
                 $destiny_wallet = Wallet::findOrFail($request->input('destino'));
+
+                if($origin_wallet->money < $request->input('monto')){
+                    return response()->json(['error' => 'The origin wallet does not have enough money'], 400);
+                }
 
                 $origin_wallet->money = $origin_wallet->money - $request->input('monto');
                 $origin_wallet->save();
@@ -46,7 +54,7 @@ class EventController extends Controller
                     ['id' => $destiny_wallet->id, 'balance' => $destiny_wallet->money]
                 ], 200);            
             default:
-                return response()->json('Not found', 404);
+                return response()->json(['error' => 'Not found'], 404);
           }
     }
 }
