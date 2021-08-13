@@ -23,4 +23,5 @@ use App\Http\Controllers\EventController;
 
 
 Route::get('/balance/{id}', [WalletController::class, 'index']);
+Route::post('/balance', [WalletController::class, 'create']);
 Route::post('/evento', [EventController::class, 'create']);

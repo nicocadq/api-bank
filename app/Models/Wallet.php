@@ -10,6 +10,10 @@ class Wallet extends Model
 {
     use HasFactory;
 
+    protected $attributes = [
+        'money' => 0,
+    ];
+
     public function events(){
         return $this->hasMany(Event::class);
     }

@@ -17,4 +17,15 @@ class WalletController extends ApiController
         }
       
     }
+
+    public function create(){
+        try {
+            $wallet = Wallet::create();
+
+            return response()->json(['id' => $wallet->id, 'balance' => $wallet->money], 201);
+        } catch (Exception $exception){
+            return  $this->sendError('Wallet was not created');
+        }
+      
+    }
 }
