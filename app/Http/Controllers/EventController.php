@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Wallet;
 use App\Models\Event;
+use Illuminate\Support\Facades\Mail;
 
 class EventController extends Controller
 {
@@ -26,10 +27,18 @@ class EventController extends Controller
                 return response()->json(['id' => $wallet->id, 'balance' => $wallet->money], 200);
             case $this->WITHDRAWAL:
                 $wallet = Wallet::findOrFail($request->input('origen'));
+                $token = 1234;
 
                 if($wallet->money < $request->input('monto')){
                     return response()->json(['error' => 'Not enough money to make the withdrawal'], 400);
                 }
+
+                $data_to_mailer = [
+                    'wallet' => $wallet,
+                    'token' => $token
+                ];
+
+                Mail::to('nicolas.machado@anima.edu.uy')->send(new \App\Mail\BigWithdrawalToken($data_to_mailer));
 
                 $wallet->money = $wallet->money - $request->input('monto');
                 $wallet->save();

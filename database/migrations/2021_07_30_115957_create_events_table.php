@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 class CreateEventsTable extends Migration
 {
     /**
-     * Run the migrations.
+     * Run the migrations. TODO: delete `unsigned` and `nullable` methods from schema
      *
      * @return void
      */

@@ -30,7 +30,7 @@ class WalletController extends ApiController
                 'email' => $wallet->email
             ], 201);
         } catch (\Exception $exception){
-            return  $this->sendError('Wallet was not created');
+            return  response()->json(['error' => 'The email provided already exist'], 404);
         }
       
     }
