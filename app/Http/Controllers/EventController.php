@@ -20,25 +20,42 @@ class EventController extends Controller
         switch ($type) {
             case $this->DEPOSIT:
                 $wallet = Wallet::findOrFail($request->input('destino'));
-                
+
+                $event = Event::create([
+                    'type' => $request->input('tipo'),
+                    'amount' => $request->input('monto'),
+                    'destiny_wallet_id' => $wallet->id
+                ]);
+
                 $wallet->money = $wallet->money + $request->input('monto');
                 $wallet->save();
 
                 return response()->json(['id' => $wallet->id, 'balance' => $wallet->money], 200);
             case $this->WITHDRAWAL:
                 $wallet = Wallet::findOrFail($request->input('origen'));
-                $token = 1234;
+
+                $event = Event::create([
+                    'type' => $request->input('tipo'),
+                    'amount' => $request->input('monto'),
+                    'origin_wallet_id' => $wallet->id
+                ]);
+
+                $maxAmount = 10;
 
                 if($wallet->money < $request->input('monto')){
                     return response()->json(['error' => 'Not enough money to make the withdrawal'], 400);
                 }
 
-                $data_to_mailer = [
-                    'wallet' => $wallet,
-                    'token' => $token
-                ];
+                if($request->input('monto') >= $maxAmount && !$this->isValidToken($request)){
+                    $token = 1234;
 
-                Mail::to('nicolas.machado@anima.edu.uy')->send(new \App\Mail\BigWithdrawalToken($data_to_mailer));
+                    $data_to_mailer = [
+                        'wallet' => $wallet,
+                        'token' => $token
+                    ];
+
+                    Mail::to($wallet->email)->send(new \App\Mail\BigWithdrawalToken($data_to_mailer));
+                }
 
                 $wallet->money = $wallet->money - $request->input('monto');
                 $wallet->save();
@@ -47,6 +64,13 @@ class EventController extends Controller
             case $this->TRANSFER:
                 $origin_wallet = Wallet::findOrFail($request->input('origen'));
                 $destiny_wallet = Wallet::findOrFail($request->input('destino'));
+
+                $event = Event::create([
+                    'type' => $request->input('tipo'),
+                    'amount' => $request->input('monto'),
+                    'origin_wallet_id' => $origin_wallet->id,
+                    'destiny_wallet_id' => $destiny_wallet->id
+                ]);
 
                 if($origin_wallet->money < $request->input('monto')){
                     return response()->json(['error' => 'The origin wallet does not have enough money'], 400);
@@ -65,5 +89,9 @@ class EventController extends Controller
             default:
                 return response()->json(['error' => 'Not found'], 404);
           }
+    }
+
+    protected function isValidToken(Request $request){
+        return false;
     }
 }

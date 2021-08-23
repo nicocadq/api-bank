@@ -18,9 +18,9 @@ class CreateEventsTable extends Migration
             $table->enum('type', ['deposito', 'retiro', 'transferencia']);
             $table->float('amount');
             $table->unsignedBigInteger('origin_wallet_id')->unsigned()->nullable();
-            $table->foreign('origin_wallet_id')->references('id')->on('events');
+            $table->foreign('origin_wallet_id')->references('id')->on('wallets');
             $table->unsignedBigInteger('destiny_wallet_id')->unsigned()->nullable();
-            $table->foreign('destiny_wallet_id')->references('id')->on('events');
+            $table->foreign('destiny_wallet_id')->references('id')->on('wallets');
             $table->timestamps();
         });
     }

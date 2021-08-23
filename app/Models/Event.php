@@ -10,7 +10,7 @@ class Event extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['type', 'amount', 'destiny_wallet_id'];
+    protected $fillable = ['type', 'amount', 'destiny_wallet_id', 'origin_wallet_id'];
 
     public function origin()
     {
