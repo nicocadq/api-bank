@@ -11,6 +11,8 @@ class Token extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['event'];
+
     public function event()
     {
         return $this->belongsTo(Event::class, 'event');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Wallet;
 use App\Models\Event;
+use App\Models\Token;
 use Illuminate\Support\Facades\Mail;
 
 class EventController extends Controller
@@ -46,21 +47,26 @@ class EventController extends Controller
                     return response()->json(['error' => 'Not enough money to make the withdrawal'], 400);
                 }
 
-                if($request->input('monto') >= $maxAmount && !$this->isValidToken($request)){
-                    $token = 1234;
+                $is_valid_token = $this->isValidToken($request);
+
+                if($request->input('monto') >= $maxAmount && !($is_valid_token)){
+                    $token = Token::create([
+                        'event' => $event->id
+                    ]);;
 
                     $data_to_mailer = [
                         'wallet' => $wallet,
-                        'token' => $token
+                        'token' => $token->id
                     ];
 
                     Mail::to($wallet->email)->send(new \App\Mail\BigWithdrawalToken($data_to_mailer));
+
+                    return response()->json(['error' => 'withdrawal permitted amount exceed, email sent with a token'], 400);
+                } else {
+                    $wallet->money = $wallet->money - $request->input('monto');
+                    $wallet->save();
+                    return response()->json(['id' => $wallet->id, 'balance' => $wallet->money], 200);
                 }
-
-                $wallet->money = $wallet->money - $request->input('monto');
-                $wallet->save();
-
-                return response()->json(['id' => $wallet->id, 'balance' => $wallet->money], 200);
             case $this->TRANSFER:
                 $origin_wallet = Wallet::findOrFail($request->input('origen'));
                 $destiny_wallet = Wallet::findOrFail($request->input('destino'));
@@ -73,7 +79,7 @@ class EventController extends Controller
                 ]);
 
                 if($origin_wallet->money < $request->input('monto')){
-                    return response()->json(['error' => 'The origin wallet does not have enough money'], 400);
+                    return response()->json(['error' => 'La cartera no tiene dinero suficiente'], 400);
                 }
 
                 $origin_wallet->money = $origin_wallet->money - $request->input('monto');
@@ -92,6 +98,13 @@ class EventController extends Controller
     }
 
     protected function isValidToken(Request $request){
+        $date = new \DateTime();
+        $date_to_compare = $date->modify('-5 minutes');
+
+        $token = Token::where('id', $request->input('token'))->whereDate('created_at', '>=', $date_to_compare)->first();
+
+        if($token) return true;
+
         return false;
     }
 }
