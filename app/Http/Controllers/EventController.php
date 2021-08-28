@@ -44,7 +44,7 @@ class EventController extends Controller
                 $maxAmount = 10;
 
                 if($wallet->money < $request->input('monto')){
-                    return response()->json(['error' => 'Not enough money to make the withdrawal'], 400);
+                    return response()->json(['error' => 'Dinero insuficiente para realizar el retiro'], 400);
                 }
 
                 $is_valid_token = $this->isValidToken($request);
@@ -61,7 +61,9 @@ class EventController extends Controller
 
                     Mail::to($wallet->email)->send(new \App\Mail\BigWithdrawalToken($data_to_mailer));
 
-                    return response()->json(['error' => 'withdrawal permitted amount exceed, email sent with a token'], 400);
+                    return response()->json([
+                        'error' => 'Cantidad permitida excedida, enviamos un token a su email para realizar el retiro'
+                    ], 400);
                 } else {
                     $wallet->money = $wallet->money - $request->input('monto');
                     $wallet->save();

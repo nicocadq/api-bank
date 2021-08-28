@@ -13,7 +13,7 @@ class WalletController extends ApiController
 
             return response()->json(['id' => $wallet->id, 'balance' => $wallet->money]);
         } catch (Exception $exception){
-            return  $this->sendError('Wallet not found');
+            return  $this->sendError('Cartera no encontrada');
         }
       
     }
@@ -30,7 +30,7 @@ class WalletController extends ApiController
                 'email' => $wallet->email
             ], 201);
         } catch (\Exception $exception){
-            return  response()->json(['error' => 'The email provided already exist'], 404);
+            return  response()->json(['error' => 'Este email ya existe'], 404);
         }
       
     }
