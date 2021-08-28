@@ -63,7 +63,7 @@ no encuentra el `destino` -> expect(404)
 `monto` > 1000, encuentra `origen`, sin `token` o `token` invalido ->
  expect({ error: 'Token invalido, enviamos un token a su email' }, 400)  + Email con el Token necesario
 
-salgo insuficiente -> expect({ error: 'Salgo insuficiente' }, 400)
+salgo insuficiente -> expect({ error: 'Saldo insuficiente' }, 400)
 
 no encuentra el `origen` -> expect(404)
 ```
