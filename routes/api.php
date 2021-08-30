@@ -23,5 +23,11 @@ use App\Http\Controllers\EventController;
 
 
 Route::get('/balance/{id}', [WalletController::class, 'index']);
+Route::put('/balance/{id}', [WalletController::class, 'update']);
 Route::post('/balance', [WalletController::class, 'create']);
 Route::post('/evento', [EventController::class, 'create']);
+
+
+Route::post('/reset', function() {
+  return Artisan::call('migrate:fresh');    
+});

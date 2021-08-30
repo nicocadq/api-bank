@@ -41,7 +41,7 @@ class EventController extends Controller
                     'origin_wallet_id' => $wallet->id
                 ]);
 
-                $maxAmount = 10;
+                $maxAmount = 1000;
 
                 if($wallet->money < $request->input('monto')){
                     return response()->json(['error' => 'Dinero insuficiente para realizar el retiro'], 400);

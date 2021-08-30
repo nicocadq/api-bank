@@ -11,7 +11,7 @@ class WalletController extends ApiController
         try {
             $wallet = Wallet::findOrFail($id);
 
-            return response()->json(['id' => $wallet->id, 'balance' => $wallet->money]);
+            return response()->json(['id' => $wallet->id, 'balance' => $wallet->money, 'email' => $wallet->email]);
         } catch (Exception $exception){
             return  $this->sendError('Cartera no encontrada');
         }
@@ -33,5 +33,24 @@ class WalletController extends ApiController
             return  response()->json(['error' => 'Este email ya existe'], 404);
         }
       
+    }
+
+    // public function update(Request $request, $id)
+    // {
+    //     $donation = Donation::find($id);
+    //     $donation->update($request->all());
+    //     return $donation;
+    // }
+
+    public function update(Request $request, $id){
+        try{
+            $wallet = Wallet::find($id);
+            $old_email = $wallet->email;
+            $wallet->update($request->all());
+
+            return response()->json(['current_email' => $wallet->email, 'old_email' => $old_email], 200);
+        } catch(\Exception $exception){
+            return  response()->json(['error' => 'Cuenta no encontrada'], 404);
+        }
     }
 }

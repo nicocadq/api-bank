@@ -11,7 +11,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8000/api/balance/9",
+					"raw": "http://localhost:8000/api/balance/2",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -20,7 +20,7 @@
 					"path": [
 						"api",
 						"balance",
-						"9"
+						"2"
 					]
 				}
 			},
@@ -33,7 +33,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"tipo\": \"deposito\",\n    \"destino\": 7,\n    \"monto\": 100\n}",
+					"raw": "{\n    \"tipo\": \"deposito\",\n    \"destino\": 1,\n    \"monto\": 1500\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -62,7 +62,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"tipo\": \"retiro\",\n    \"origen\": 7,\n    \"monto\": 100\n}",
+					"raw": "{\n    \"tipo\": \"retiro\",\n    \"origen\": 7,\n    \"monto\": 11,\n    \"token\": 6\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -91,7 +91,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"tipo\": \"transferencia\",\n    \"monto\": 10,\n    \"origen\": 6,\n    \"destino\": 1\n}",
+					"raw": "{\n    \"tipo\": \"transferencia\",\n    \"monto\": 100,\n    \"origen\": 1,\n    \"destino\": 2\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -120,7 +120,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"nicolas.machado@anima.edu.uy\"\n}",
+					"raw": "{\n    \"email\": \"n.machado@anima.edu.uy\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -137,6 +137,56 @@
 					"path": [
 						"api",
 						"balance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update wallet",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"new@email.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/balance/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"balance",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reset database",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/reset",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"reset"
 					]
 				}
 			},
